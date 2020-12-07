@@ -25,6 +25,14 @@ def parl(requests, slug):
             'type': 'Vote',
             'content': f'A voté {vote.position} sur {vote.scrutin.titre}',
         })
+    for inter in nd15_models.Intervention.objects.filter(parlementaire_id=parl.id):
+        events.append({
+            'date': str(inter.date),
+            'type': 'Intervention',
+            'content': inter.intervention,
+        })
+    events.sort(key=lambda event:event['date'])
+    events = list(reversed(events))
 
     html = templates_stream.render(events=events)
     html = html.replace('Paula Forteza', parl.nom)
