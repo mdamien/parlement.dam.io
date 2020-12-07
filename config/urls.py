@@ -20,5 +20,6 @@ from core import views as core_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', core_views.index)
+    path('', core_views.index),
+    path('<slug>/', core_views.parl),
 ]
