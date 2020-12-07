@@ -238,8 +238,8 @@ class ParlementairePhoto(models.Model):
 
 class ParlementaireScrutin(models.Model):
     id = models.BigAutoField(primary_key=True)
-    scrutin_id = models.BigIntegerField(blank=True, null=True)
-    parlementaire_id = models.BigIntegerField(blank=True, null=True)
+    scrutin = models.ForeignKey('Scrutin', blank=True, null=True, on_delete=models.CASCADE)
+    parlementaire = models.ForeignKey('Parlementaire', blank=True, null=True, on_delete=models.CASCADE)
     parlementaire_groupe_acronyme = models.CharField(max_length=16, blank=True, null=True)
     position = models.CharField(max_length=255, blank=True, null=True)
     position_groupe = models.CharField(max_length=255, blank=True, null=True)
