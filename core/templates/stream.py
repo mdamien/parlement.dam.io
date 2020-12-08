@@ -26,7 +26,7 @@ TEMPLATE = """
     </style>
     <div style="margin: auto; border-left: 1px solid #38444d; border-right: 1px solid #38444d; max-width: 600px">
         <br>
-        <center>Actualité des parlementaires</center>
+        <center>Actualités des parlementaires</center>
         <br>
         <hr style="border:none; border-top: 1px solid #38444d;margin:0">
         <div style="padding: 0 10px">
