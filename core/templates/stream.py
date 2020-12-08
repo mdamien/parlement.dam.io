@@ -1,3 +1,6 @@
+from lys import L
+
+
 TEMPLATE = """
 <body style="background: #15202b; min-height: 100%;color:white; font-family: sans-serif;margin: 0">
     <div style="margin: auto; border-left: 1px solid #38444d; border-right: 1px solid #38444d; max-width: 600px">
@@ -12,47 +15,30 @@ TEMPLATE = """
             <p><b>Paula Forteza</b></p>
             <p>Député (XXX)</p>
         </div>
-        <div style="padding: 0 10px; color:rgb(136, 153, 166)" id="filters">
-            <span style="border-bottom: 2px solid rgb(29, 161, 242);color:rgb(29, 161, 242)">
-                <b>Tout</b>
-            </span>
-            <span>
-                Votes
-            </span>
-            <span>
-                Interventions
-            </span>
-            <span>
-                Amendements
-            </span>
-            <span>
-                Propositions de loi
-            </span>
-            <span>
-                Questions orales
-            </span>
-            <span>
-                Questions écrites
-            </span>
-            <span>
-                Rapports
-            </span>
+        <div style="color:rgb(136, 153, 166)" id="filters">
+            [filters]
         </div>
         <hr style="border:none; border-top: 1px solid #38444d">
         [events]
     </div>
     <style>
         html {min-height: 100%}
-        #filters > span {
+        #filters > a {
             display: inline-block;
             padding: 10px;
-            cursor: pointer;
+            color: inherit;
+            text-decoration: none;
+        }
+        #filters > a:hover {
+            color: rgb(29, 161, 242) !important;
+            background: rgba(29, 161, 242, 0.1);
         }
     </style>
 </body>
 """
 
-def render(events):
+
+def render(requests, events):
     events_html = ""
     for event in events:
         event_html = """
@@ -66,4 +52,28 @@ def render(events):
         event_html = event_html.replace('[type]', event['type'])
         event_html = event_html.replace('[content]', event['content'])
         events_html += event_html
-    return TEMPLATE.replace('[events]', events_html)
+
+    filters_html = ""
+    filters = (
+        ('?', 'Tout'),
+        ('?filter=votes', 'Votes'),
+        ('?filter=interventions', 'Interventions'),
+        ('?filter=amendements', 'Amendements'),
+        ('?filter=propositions-de-loi', 'Propositions de loi'),
+        ('?filter=questions-orales', 'Questions orales'),
+        ('?filter=questions-ecrites', 'Questions écrites'),
+        ('?filter=rapports', 'Rapports'),
+    )
+    for filter_href, filter_text in filters:
+        filter = None
+        if '=' in filter_href:
+            filter = filter_href.split('=')[1]
+        style = None
+        if requests.GET.get('filter') == filter:
+            style="border-bottom: 2px solid rgb(29, 161, 242);color:rgb(29, 161, 242)"
+        filters_html += str(L.a(href=filter_href, style=style) / filter_text)
+
+    html = TEMPLATE.replace('[events]', events_html)
+    html = html.replace('[filters]', filters_html)
+
+    return html
