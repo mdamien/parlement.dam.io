@@ -21,6 +21,8 @@ def parl(requests, slug):
     events = []
     if requests.GET.get('filter', 'votes') == 'votes':
         for vote in nd15_models.ParlementaireScrutin.objects.filter(parlementaire_id=parl).order_by('-scrutin__numero').select_related('scrutin'):
+            if not vote.position:
+                continue
             events.append({
                 'date': vote.scrutin.date,
                 'type': 'Vote',
@@ -39,7 +41,7 @@ def parl(requests, slug):
     events = list(reversed(events))
 
     html = templates_stream.render(requests, events)
-    html = html.replace('Paula Forteza', parl.nom)
+    html = html.replace('YYY', parl.nom)
     html = html.replace('XXX', parl.nom_circo)
     if parl.sexe == 'F':
         html = html.replace('Député', 'Députée')

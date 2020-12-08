@@ -29,11 +29,10 @@ TEMPLATE = """
         <br>
         <hr style="border:none; border-top: 1px solid #38444d;margin:0">
         <div style="padding: 0 10px">
-            <br>
             <span style="float: right;">
                 <button style="color:white;background: rgb(29, 161, 242); border: none; padding: 10px 20px; border-radius: 10px"><b>Suivre</b></button>
             </span>
-            <p><b>Paula Forteza</b></p>
+            <p><b>YYY</b></p>
             <p>Député (XXX)</p>
         </div>
         <div style="color:rgb(136, 153, 166)" id="filters">
@@ -58,7 +57,7 @@ def render(requests, events):
         </a>
         <hr style="border:none; border-top: 1px solid #38444d;margin:0">
         """
-        date = str(event['date'].strftime("%a %y %b %Y"))
+        date = str(event['date'].strftime("%a %d %b %Y"))
         event_html = event_html.replace('[url]', event['url'])
         event_html = event_html.replace('[date]', date)
         event_html = event_html.replace('[type]', event['type'])
