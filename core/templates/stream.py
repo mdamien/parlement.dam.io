@@ -72,6 +72,7 @@ def render(requests, events):
         ('?filter=interventions', 'Interventions'),
         ('?filter=amendements', 'Amendements'),
         ('?filter=propositions-de-loi', 'Propositions de loi'),
+        ('?filter=questions-orales', 'Questions orales'),
         ('?filter=questions-ecrites', 'Questions écrites'),
         ('?filter=rapports', 'Rapports'),
     )

@@ -29,8 +29,12 @@ def parl(requests, slug):
                 'content': f'A voté <b>{vote.position}</b> sur {vote.scrutin.titre}',
                 'url': f'https://www.nosdeputes.fr/15/scrutin/{vote.scrutin.numero}'
             })
-    if requests.GET.get('filter', 'interventions') == 'interventions':
+    if requests.GET.get('filter') in (None, 'interventions', 'questions-orales'):
         for inter in nd15_models.Intervention.objects.filter(parlementaire_id=parl.id):
+            if requests.GET.get('filter') == 'interventions' and inter.type == 'question':
+                continue
+            if requests.GET.get('filter') == 'questions-orales' and not inter.type == 'question':
+                continue
             events.append({
                 'date': inter.date,
                 'type': 'Intervention' + (' - Question orale' if inter.type == 'question' else ''),
@@ -52,9 +56,9 @@ def parl(requests, slug):
     if requests.GET.get('filter') in (None, 'rapports', 'propositions-de-loi'):
         for signature in nd15_models.ParlementaireTexteloi.objects.filter(parlementaire=parl):
             rapport = signature.texteloi.type not in ('Proposition de loi', 'Proposition de résolution')
-            if requests.GET.get('filter', 'rapports') == 'rapports' and not rapport:
+            if requests.GET.get('filter') == 'rapports' and not rapport:
                 continue
-            if requests.GET.get('filter', 'propositions-de-loi') == 'propositions-de-loi' and rapport:
+            if requests.GET.get('filter') == 'propositions-de-loi' and rapport:
                 continue
             events.append({
                 'date': signature.texteloi.date,
