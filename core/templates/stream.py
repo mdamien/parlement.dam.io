@@ -6,7 +6,8 @@ TEMPLATE = """
     <div style="margin: auto; border-left: 1px solid #38444d; border-right: 1px solid #38444d; max-width: 600px">
         <br>
         <center>parlement.dam.io</center>
-        <hr style="border:none; border-top: 1px solid #38444d">
+        <br>
+        <hr style="border:none; border-top: 1px solid #38444d;margin:0">
         <div style="padding: 0 10px">
             <br>
             <span style="float: right;">
@@ -18,7 +19,7 @@ TEMPLATE = """
         <div style="color:rgb(136, 153, 166)" id="filters">
             [filters]
         </div>
-        <hr style="border:none; border-top: 1px solid #38444d">
+        <hr style="border:none; border-top: 1px solid #38444d;margin:0">
         [events]
     </div>
     <style>
@@ -33,6 +34,9 @@ TEMPLATE = """
             color: rgb(29, 161, 242) !important;
             background: rgba(29, 161, 242, 0.1);
         }
+        .post:hover {
+            background: rgba(29, 161, 242, 0.1);
+        }
     </style>
 </body>
 """
@@ -42,11 +46,11 @@ def render(requests, events):
     events_html = ""
     for event in events:
         event_html = """
-        <div style="padding: 0 10px">
-            <p style="color:rgb(136, 153, 166)">[date] - [type]</p>
+        <div style="padding: 10px 10px" class="post">
+            <p style="color:rgb(136, 153, 166);margin: 0;padding-bottom:10px">[date] - [type]</p>
             [content]
         </div>
-        <hr style="border:none; border-top: 1px solid #38444d">
+        <hr style="border:none; border-top: 1px solid #38444d;margin:0">
         """
         event_html = event_html.replace('[date]', event['date'])
         event_html = event_html.replace('[type]', event['type'])
