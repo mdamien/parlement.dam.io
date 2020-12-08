@@ -32,6 +32,7 @@ TEMPLATE = """
             <span style="float: right;">
                 <button style="color:white;background: rgb(29, 161, 242); border: none; padding: 10px 20px; border-radius: 10px"><b>Suivre</b></button>
             </span>
+            <p><img src="https://www.nosdeputes.fr/depute/photo/ZZZ" width=100 style="border-radius:10px"/></p>
             <p><b>YYY</b></p>
             <p>Député (XXX)</p>
         </div>

@@ -34,7 +34,7 @@ def parl(requests, slug):
             events.append({
                 'date': inter.date,
                 'type': 'Intervention',
-                'content': '<i>'+inter.intervention+'</i>',
+                'content': inter.intervention,
                 'url': f"https://nosdeputes.fr/15/seance/{inter.seance_id}#inter_{inter.md5}"
             })
     if requests.GET.get('filter', 'amendements') == 'amendements':
@@ -75,6 +75,7 @@ def parl(requests, slug):
     html = templates_stream.render(requests, events)
     html = html.replace('YYY', parl.nom)
     html = html.replace('XXX', parl.nom_circo)
+    html = html.replace('ZZZ', parl.slug)
     if parl.sexe == 'F':
         html = html.replace('Député', 'Députée')
 
