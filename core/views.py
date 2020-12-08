@@ -1,10 +1,11 @@
 from django.http import HttpResponse
+from django.middleware.csrf import get_token
 
 from lys import L
 
 from ns import models as ns_models
 from nd15 import models as nd15_models
-
+from .models import Follow
 from .templates import stream as templates_stream
 
 
@@ -81,7 +82,16 @@ def parl(requests, slug):
     html = html.replace('YYY', parl.nom)
     html = html.replace('XXX', parl.nom_circo)
     html = html.replace('ZZZ', parl.slug)
+    html = html.replace('GGG', parl.groupe_acronyme)
+    html = html.replace('TTT', get_token(requests))
     if parl.sexe == 'F':
         html = html.replace('Député', 'Députée')
 
     return HttpResponse(html)
+
+def follow(requests):
+    email = requests.POST['email']
+    slug = requests.POST['slug']
+    follow = Follow(parlementaire_slug=slug, email=email)
+    follow.save()
+    return HttpResponse('ok')

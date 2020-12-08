@@ -4,6 +4,7 @@ from lys import L
 
 
 TEMPLATE = """
+<title>Actualités de YYY</title>
 <body style="background: #15202b; min-height: 100%;color:white; font-family: sans-serif;margin: 0">
     <style>
         html {min-height: 100%}
@@ -30,11 +31,11 @@ TEMPLATE = """
         <hr style="border:none; border-top: 1px solid #38444d;margin:0">
         <div style="padding: 0 10px">
             <span style="float: right;">
-                <button style="color:white;background: rgb(29, 161, 242); border: none; padding: 10px 20px; border-radius: 10px"><b>Suivre</b></button>
+                <button onclick='follow()'style="cursor:pointer;color:white;background: rgb(29, 161, 242); border: none; padding: 10px 20px; border-radius: 10px"><b>Suivre</b></button>
             </span>
             <p><img src="https://www.nosdeputes.fr/depute/photo/ZZZ" width=100 style="border-radius:10px"/></p>
             <p><b>YYY</b></p>
-            <p>Député (XXX)</p>
+            <p>Député (XXX) - GGG</p>
         </div>
         <div style="color:rgb(136, 153, 166)" id="filters">
             [filters]
@@ -42,6 +43,19 @@ TEMPLATE = """
         <hr style="border:none; border-top: 1px solid #38444d;margin:0">
         [events]
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script>
+    function follow() {
+        mail = prompt('Adresse mail')
+        $.post('/follow/', {
+            slug: "ZZZ",
+            email: mail,
+            csrfmiddlewaretoken: "TTT",
+        }, function() {
+            alert('Vous êtes désormais abonné aux actualités de YYY')
+        })
+    }
+    </script>
 </body>
 """
 

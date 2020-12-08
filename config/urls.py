@@ -21,5 +21,6 @@ from core import views as core_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', core_views.index),
+    path('follow/', core_views.follow),
     path('<slug>/', core_views.parl),
 ]
