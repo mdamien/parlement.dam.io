@@ -37,6 +37,38 @@ def parl(requests, slug):
                 'content': '<i>'+inter.intervention+'</i>',
                 'url': f"https://nosdeputes.fr/15/seance/{inter.seance_id}#inter_{inter.md5}"
             })
+    if requests.GET.get('filter', 'amendements') == 'amendements':
+        for amdt in nd15_models.Amendement.objects.filter(auteur_id=parl.id):
+            if not amdt.date:
+                continue
+            if not amdt.expose:
+                continue
+            events.append({
+                'date': amdt.date,
+                'type': 'Amendement (Auteur)',
+                'content': amdt.expose,
+                'url': f"https://nosdeputes.fr/15/amendement/{amdt.texteloi_id}/{amdt.numero}"
+            })
+    if requests.GET.get('filter', 'propositions-de-loi') == 'propositions-de-loi':
+        for signature in nd15_models.ParlementaireTexteloi.objects.filter(parlementaire=parl):
+            events.append({
+                'date': signature.texteloi.date,
+                'type': 'Proposition de loi',
+                'content': f"{signature.texteloi.type} {signature.texteloi.titre}",
+                'url': f"https://nosdeputes.fr/15/document/{signature.texteloi.id}"
+            })
+    # todo: questions orales
+    if requests.GET.get('filter', 'questions-ecrites') == 'questions-ecrites':
+        for question in nd15_models.QuestionEcrite.objects.filter(parlementaire=parl):
+            events.append({
+                'date': question.date,
+                'type': 'Question écrite',
+                'content': question.question,
+                'url': f"https://nosdeputes.fr/15/question/QE/{question.numero}"
+            })
+    if requests.GET.get('filter', 'rapports') == 'rapports':
+        # todo rapports
+        pass
     events.sort(key=lambda event:event['date'])
     events = list(reversed(events))
 

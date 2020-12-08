@@ -257,9 +257,9 @@ class ParlementaireScrutin(models.Model):
 
 class ParlementaireTexteloi(models.Model):
     id = models.BigAutoField(primary_key=True)
-    parlementaire_id = models.BigIntegerField(blank=True, null=True)
+    parlementaire = models.ForeignKey('Parlementaire', blank=True, null=True, on_delete=models.CASCADE)
     parlementaire_groupe_acronyme = models.CharField(max_length=16, blank=True, null=True)
-    texteloi_id = models.CharField(max_length=16, blank=True, null=True)
+    texteloi = models.ForeignKey('Texteloi', blank=True, null=True, on_delete=models.CASCADE)
     importance = models.BigIntegerField(blank=True, null=True)
     fonction = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField()
@@ -329,7 +329,7 @@ class QuestionEcrite(models.Model):
     reponse = models.TextField(blank=True, null=True)
     motif_retrait = models.TextField(blank=True, null=True)
     content_md5 = models.CharField(max_length=36, blank=True, null=True)
-    parlementaire_id = models.BigIntegerField(blank=True, null=True)
+    parlementaire = models.ForeignKey('Parlementaire', blank=True, null=True, on_delete=models.CASCADE)
     parlementaire_groupe_acronyme = models.CharField(max_length=16, blank=True, null=True)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
