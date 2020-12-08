@@ -25,6 +25,7 @@ def parl(requests, slug):
                 'date': str(vote.scrutin.date),
                 'type': 'Vote',
                 'content': f'A voté <b>{vote.position}</b> sur {vote.scrutin.titre}',
+                'url': f'https://www.nosdeputes.fr/15/scrutin/{vote.scrutin.numero}'
             })
     if requests.GET.get('filter', 'votes') == 'interventions':
         for inter in nd15_models.Intervention.objects.filter(parlementaire_id=parl.id):
@@ -32,6 +33,7 @@ def parl(requests, slug):
                 'date': str(inter.date),
                 'type': 'Intervention',
                 'content': '<i>'+inter.intervention+'</i>',
+                'url': f"https://nosdeputes.fr/15/seance/{inter.seance_id}#inter_{inter.md5}"
             })
     events.sort(key=lambda event:event['date'])
     events = list(reversed(events))

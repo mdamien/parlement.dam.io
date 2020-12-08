@@ -24,11 +24,13 @@ TEMPLATE = """
     </div>
     <style>
         html {min-height: 100%}
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
         #filters > a {
             display: inline-block;
             padding: 10px;
-            color: inherit;
-            text-decoration: none;
         }
         #filters > a:hover {
             color: rgb(29, 161, 242) !important;
@@ -46,12 +48,13 @@ def render(requests, events):
     events_html = ""
     for event in events:
         event_html = """
-        <div style="padding: 10px 10px" class="post">
+        <a href="[url]" style="padding: 10px 10px; display:block" class="post">
             <p style="color:rgb(136, 153, 166);margin: 0;padding-bottom:10px">[date] - [type]</p>
             [content]
-        </div>
+        </a>
         <hr style="border:none; border-top: 1px solid #38444d;margin:0">
         """
+        event_html = event_html.replace('[url]', event['url'])
         event_html = event_html.replace('[date]', event['date'])
         event_html = event_html.replace('[type]', event['type'])
         event_html = event_html.replace('[content]', event['content'])
