@@ -63,7 +63,7 @@ def parl(requests, slug):
                 continue
             events.append({
                 'date': signature.texteloi.date,
-                'type': signature.texteloi.type,
+                'type': signature.texteloi.type + (' (Auteur)' if signature.importance == 1 else ''),
                 'content': f"{signature.texteloi.type} {signature.texteloi.titre}",
                 'url': f"https://nosdeputes.fr/15/document/{signature.texteloi.id}"
             })
