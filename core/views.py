@@ -33,7 +33,7 @@ def parl(requests, slug):
         for inter in nd15_models.Intervention.objects.filter(parlementaire_id=parl.id):
             events.append({
                 'date': inter.date,
-                'type': 'Intervention',
+                'type': 'Intervention' + (' - Question orale' if inter.type == 'question' else ''),
                 'content': inter.intervention,
                 'url': f"https://nosdeputes.fr/15/seance/{inter.seance_id}#inter_{inter.md5}"
             })
@@ -49,15 +49,19 @@ def parl(requests, slug):
                 'content': amdt.expose,
                 'url': f"https://nosdeputes.fr/15/amendement/{amdt.texteloi_id}/{amdt.numero}"
             })
-    if requests.GET.get('filter', 'propositions-de-loi') == 'propositions-de-loi':
+    if requests.GET.get('filter') in (None, 'rapports', 'propositions-de-loi'):
         for signature in nd15_models.ParlementaireTexteloi.objects.filter(parlementaire=parl):
+            rapport = signature.texteloi.type not in ('Proposition de loi', 'Proposition de résolution')
+            if requests.GET.get('filter', 'rapports') == 'rapports' and not rapport:
+                continue
+            if requests.GET.get('filter', 'propositions-de-loi') == 'propositions-de-loi' and rapport:
+                continue
             events.append({
                 'date': signature.texteloi.date,
-                'type': 'Proposition de loi',
+                'type': signature.texteloi.type,
                 'content': f"{signature.texteloi.type} {signature.texteloi.titre}",
                 'url': f"https://nosdeputes.fr/15/document/{signature.texteloi.id}"
             })
-    # todo: questions orales
     if requests.GET.get('filter', 'questions-ecrites') == 'questions-ecrites':
         for question in nd15_models.QuestionEcrite.objects.filter(parlementaire=parl):
             events.append({
@@ -66,9 +70,6 @@ def parl(requests, slug):
                 'content': question.question,
                 'url': f"https://nosdeputes.fr/15/question/QE/{question.numero}"
             })
-    if requests.GET.get('filter', 'rapports') == 'rapports':
-        # todo rapports
-        pass
     events.sort(key=lambda event:event['date'])
     events = list(reversed(events))
 

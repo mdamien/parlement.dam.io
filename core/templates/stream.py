@@ -25,7 +25,7 @@ TEMPLATE = """
     </style>
     <div style="margin: auto; border-left: 1px solid #38444d; border-right: 1px solid #38444d; max-width: 600px">
         <br>
-        <center>parlement.dam.io</center>
+        <center>Actualité des parlementaires</center>
         <br>
         <hr style="border:none; border-top: 1px solid #38444d;margin:0">
         <div style="padding: 0 10px">
@@ -72,7 +72,6 @@ def render(requests, events):
         ('?filter=interventions', 'Interventions'),
         ('?filter=amendements', 'Amendements'),
         ('?filter=propositions-de-loi', 'Propositions de loi'),
-        ('?filter=questions-orales', 'Questions orales'),
         ('?filter=questions-ecrites', 'Questions écrites'),
         ('?filter=rapports', 'Rapports'),
     )
