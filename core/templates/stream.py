@@ -1,8 +1,28 @@
+import locale
+
 from lys import L
 
 
 TEMPLATE = """
 <body style="background: #15202b; min-height: 100%;color:white; font-family: sans-serif;margin: 0">
+    <style>
+        html {min-height: 100%}
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        #filters > a {
+            display: inline-block;
+            padding: 10px;
+        }
+        #filters > a:hover {
+            color: rgb(29, 161, 242) !important;
+            background: rgba(29, 161, 242, 0.1);
+        }
+        .post:hover {
+            background: rgba(29, 161, 242, 0.1);
+        }
+    </style>
     <div style="margin: auto; border-left: 1px solid #38444d; border-right: 1px solid #38444d; max-width: 600px">
         <br>
         <center>parlement.dam.io</center>
@@ -22,29 +42,13 @@ TEMPLATE = """
         <hr style="border:none; border-top: 1px solid #38444d;margin:0">
         [events]
     </div>
-    <style>
-        html {min-height: 100%}
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-        #filters > a {
-            display: inline-block;
-            padding: 10px;
-        }
-        #filters > a:hover {
-            color: rgb(29, 161, 242) !important;
-            background: rgba(29, 161, 242, 0.1);
-        }
-        .post:hover {
-            background: rgba(29, 161, 242, 0.1);
-        }
-    </style>
 </body>
 """
 
 
 def render(requests, events):
+    locale.setlocale(locale.LC_ALL, 'fr_FR.utf8')
+
     events_html = ""
     for event in events:
         event_html = """
@@ -54,8 +58,9 @@ def render(requests, events):
         </a>
         <hr style="border:none; border-top: 1px solid #38444d;margin:0">
         """
+        date = str(event['date'].strftime("%a %y %b %Y"))
         event_html = event_html.replace('[url]', event['url'])
-        event_html = event_html.replace('[date]', event['date'])
+        event_html = event_html.replace('[date]', date)
         event_html = event_html.replace('[type]', event['type'])
         event_html = event_html.replace('[content]', event['content'])
         events_html += event_html

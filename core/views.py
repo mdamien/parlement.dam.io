@@ -20,17 +20,17 @@ def parl(requests, slug):
 
     events = []
     if requests.GET.get('filter', 'votes') == 'votes':
-        for vote in nd15_models.ParlementaireScrutin.objects.filter(parlementaire_id=parl).order_by('-scrutin__numero'):
+        for vote in nd15_models.ParlementaireScrutin.objects.filter(parlementaire_id=parl).order_by('-scrutin__numero').select_related('scrutin'):
             events.append({
-                'date': str(vote.scrutin.date),
+                'date': vote.scrutin.date,
                 'type': 'Vote',
                 'content': f'A voté <b>{vote.position}</b> sur {vote.scrutin.titre}',
                 'url': f'https://www.nosdeputes.fr/15/scrutin/{vote.scrutin.numero}'
             })
-    if requests.GET.get('filter', 'votes') == 'interventions':
+    if requests.GET.get('filter', 'interventions') == 'interventions':
         for inter in nd15_models.Intervention.objects.filter(parlementaire_id=parl.id):
             events.append({
-                'date': str(inter.date),
+                'date': inter.date,
                 'type': 'Intervention',
                 'content': '<i>'+inter.intervention+'</i>',
                 'url': f"https://nosdeputes.fr/15/seance/{inter.seance_id}#inter_{inter.md5}"
